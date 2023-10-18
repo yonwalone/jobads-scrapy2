@@ -1,6 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
+
 setup(
-    name='jobads-scrapy2',
-    package_dir={'': 'src'},
-    packages=find_packages(where='src')
+    name='src',
+    packages=find_packages(),
 )
