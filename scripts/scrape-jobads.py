@@ -4,7 +4,7 @@ from utils import PROJECT_ROOT, API_URL
 
 
 def main():
-    VERSION = "20231017-dev-jobs"
+    VERSION = "20231018-dev-jobs"
     DATA_PATH = os.path.join(PROJECT_ROOT, "data", VERSION)
     OUTPUT_FILE = os.path.join(DATA_PATH, "job_ids.npy")
     CONFIG_FILE = os.path.join(DATA_PATH, "filter_config.json")
