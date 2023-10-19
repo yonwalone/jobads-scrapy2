@@ -6,3 +6,4 @@ dependencies:
   - numpy
   - pytest
   - requests
+  - scrapy
