@@ -1,6 +1,7 @@
 import os
 import subprocess
 from src.job_url_scraper import JobUrlScraper
+from src.generate_pdfs import JobPdfGenerator
 from utils import PROJECT_ROOT, API_URL
 
 
@@ -56,6 +57,26 @@ def run_spider(input_file, output_file):
         os.chdir(original_directory)
 
 
+def generate_pdfs(input_file, template_path, output_path):
+    """
+    Generate PDFs using the JobPdfGenerator.
+
+    Args:
+        input_file (str): Path to the input JSON file containing scraped job
+            data.
+        template_path (str): Path to the directory containing the HTML template
+            file.
+    """
+    pdf_generator = JobPdfGenerator(
+        template_path,
+        input_file,
+        PROJECT_ROOT,
+        output_path
+    )
+    pdf_generator.load_job_data()
+    pdf_generator.generate_pdfs()
+
+
 def main():
     VERSION = "20231019-dev-jobs"
     DATA_PATH = os.path.join(PROJECT_ROOT, "data", VERSION)
@@ -67,6 +88,23 @@ def main():
     input_file = OUTPUT_FILE
     output_file = os.path.join(DATA_PATH, "scraped_jobs.json")
     run_spider(input_file, output_file)
+
+    while True:
+        user_input = input("Do you want to generate PDFs? (yes/no): ")
+        formatted_input = user_input.strip().lower()
+        if formatted_input in ["yes", "no"]:
+            break
+        else:
+            print("Invalid input. Please enter 'yes' or 'no'.")
+
+    should_generate_pdfs = formatted_input == "yes"
+
+    if should_generate_pdfs:
+        output_path = os.path.join(DATA_PATH, "pdfs")
+        template_path = os.path.join(
+            PROJECT_ROOT, "src", "pdf_gen"
+        )
+        generate_pdfs(output_file, template_path, output_path)
 
 
 if __name__ == "__main__":
